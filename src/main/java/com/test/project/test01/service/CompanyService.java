@@ -51,7 +51,20 @@ public class CompanyService {
 
     public CompanyDto getCompanyById(Long id)
     {
-        return  null;
+        CompanyMapper mapper = Mappers.getMapper(CompanyMapper.class);
+        CompanyDto companyDto = mapper.toCompanyDto(companyRepo.getOne(id));
+        return  companyDto;
+    }
+
+
+    public List<CompanyDto> getCompanyByNameContaining(String name)
+    {
+        CompanyMapper mapper = Mappers.getMapper(CompanyMapper.class);
+        List<CompanyDto> containList = new ArrayList<>();
+        companyRepo.findByCompanyNameContaining(name).forEach(ce -> containList.add(mapper.toCompanyDto(ce)));
+
+        return containList;
+
     }
 
 

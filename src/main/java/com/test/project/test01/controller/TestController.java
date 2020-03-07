@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
+import java.util.List;
 
 @RequestMapping(path = "/api")
 @RestController
@@ -50,8 +51,15 @@ public class TestController {
 
 
 	@GetMapping(path = "/company/{id}")
-	public  CompanyDto findCompany(@RequestParam Long id) {
+	public  CompanyDto findCompany(@PathVariable Long id) {
 		return  companyService.getCompanyById(id);
+
+	}
+
+	@GetMapping(path = "/company")
+	public List<CompanyDto> findCompanyContainName(@RequestParam(name = "name") String name){
+		return  companyService.getCompanyByNameContaining(name);
+
 
 	}
 

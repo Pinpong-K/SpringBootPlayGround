@@ -15,6 +15,5 @@ public class ContactDto {
 
     private Long id;
     private String contactName;
-    private CompanyEntity company;
 
 }
