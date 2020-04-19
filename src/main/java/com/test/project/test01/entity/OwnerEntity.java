@@ -2,7 +2,6 @@ package com.test.project.test01.entity;
 
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@Table(name = "Owner") // table name
+@Table(name = "owner") // table name
 @Entity
 public class OwnerEntity {
 
@@ -20,15 +19,16 @@ public class OwnerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String firstName;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_owner_presonal",nullable = false)
+    private PersonEntity person;
 
-    @Column
-    private String lastName;
-
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "COMPANY_FK",nullable = false)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_owner_company",nullable = false)
     private CompanyEntity company;
+
+
+
+
 
 }

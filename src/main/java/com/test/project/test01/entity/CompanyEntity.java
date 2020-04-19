@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Data
-@Table(name = "Company") // table name
+@Table(name = "company") // table name
 @Entity
 public class CompanyEntity {
 
@@ -21,16 +21,17 @@ public class CompanyEntity {
     @Column
     private String companyName;
 
-    @OneToMany(mappedBy = "company",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<OwnerEntity> listOfOwner;
-
     @OneToOne(mappedBy = "company",cascade = CascadeType.ALL)
     private AddressEntity address;
 
     @OneToMany(mappedBy = "company",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<ContactEntity> listOfContact;
+    private List<ContactEntity> contact;
 
+    @OneToMany(mappedBy = "company",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<OwnerEntity> owner;
 
+    @OneToMany(mappedBy = "company",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<EmployeeEntity> employees;
 
 
 }

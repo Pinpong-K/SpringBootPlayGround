@@ -2,6 +2,7 @@ package com.test.project.test01.dto;
 
 
 import com.test.project.test01.entity.CompanyEntity;
+import com.test.project.test01.entity.PersonEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data // all get and set
-public class ContactDto {
+public class EmployeeDto {
 
-    private Long id;
-    private String telephone_number;
+        private PersonDto person;
+
+        private CompanyDto company;
 }

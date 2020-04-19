@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@Table(name = "Contact") // table name
+@Table(name = "contact") // table name
 @Entity
 public class ContactEntity {
 
@@ -20,13 +20,12 @@ public class ContactEntity {
     private Long id;
 
     @Column
-    private String contactName;
+    private String telephone_number;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COMPANY_FK",nullable = false)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private CompanyEntity company;
 
-
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private PersonEntity person;
 
 }

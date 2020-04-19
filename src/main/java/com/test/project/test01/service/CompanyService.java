@@ -1,21 +1,20 @@
 package com.test.project.test01.service;
 
-import com.test.project.test01.dto.AddressDto;
-import com.test.project.test01.dto.CompanyDto;
-import com.test.project.test01.entity.AddressEntity;
-import com.test.project.test01.entity.CompanyEntity;
-import com.test.project.test01.entity.ContactEntity;
-import com.test.project.test01.entity.OwnerEntity;
+import com.test.project.test01.dto.*;
+import com.test.project.test01.entity.*;
 import com.test.project.test01.repository.CompanyRepo;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class CompanyService {
 
     private final CompanyRepo companyRepo;
@@ -27,26 +26,65 @@ public class CompanyService {
     }
 
 
-    public CompanyDto createCompany(CompanyDto request) {
+    public CompanyDto createCompany(CompanyDto request) throws Exception {
 
         CompanyMapper mapper = Mappers.getMapper(CompanyMapper.class);
+        PersonMapper personMapper = PersonMapper.builder().build();
 
-       // create company
-       /* CompanyEntity entity = CompanyEntity.builder()
+        List<OwnerEntity> ownerEntityList = new ArrayList<>();
+        List<EmployeeEntity> employeeEntityList = new ArrayList<>();
+        List<ContactEntity> contactEntityList = new ArrayList<>();
+
+        // create company
+        /* CompanyEntity entity = CompanyEntity.builder()
                 .address(AddressEntity.builder().address(request.getAddress().getAddress()).build())
                 .companyName(request.getCompanyName())
                 .listOfContact(null)
                 .listOfOwner(null)
                 .build();  */
-        CompanyEntity entity = mapper.toCompanyEntity(request);
+        //PersonalEntity  personal =
+
+        //create company
+        CompanyEntity company = CompanyEntity.builder()
+                .companyName(request.getCompanyName())
+                .address(AddressEntity.builder().address(request.getAddress().getAddress()).build())
+                .build();
+
+        //create contact
+        for (ContactDto contactDto :request.getListOfContact()) {
+            ContactEntity contactEntity = personMapper.contactDtoToContactEntity(contactDto);
+            //set fk key
+            contactEntity.setCompany(company);
+            contactEntityList.add(contactEntity);
+        }
+
+        //create owner
+        for (OwnerDto ownerDto :request.getListOfOwner()) {
+            OwnerEntity ownerEntity = OwnerEntity.builder().person(personMapper.PersonDtoToPersonEntity(ownerDto.getPerson())).build();
+            //set fk key
+            ownerEntity.setCompany(company);
+            ownerEntityList.add(ownerEntity);
+        }
+
+        //create employee
+        for (EmployeeDto employeeDto:request.getListOfEmployee() ) {
+            EmployeeEntity employee = EmployeeEntity.builder().person(personMapper.PersonDtoToPersonEntity(employeeDto.getPerson())).build();
+            //set fk key
+            employee.setCompany(company);
+            employeeEntityList.add(employee);
+        }
+
+        company.setContact(contactEntityList);
+        company.setOwner(ownerEntityList);
+        company.setEmployees(employeeEntityList);
+
         //set FK to all child
-        entity.getAddress().setCompany(entity);
-        entity.getListOfOwner().forEach(a -> a.setCompany(entity));
-        entity.getListOfContact().forEach(a -> a.setCompany(entity));
+        company.getAddress().setCompany(company);
 
 
-        companyRepo.save(entity);
+        companyRepo.save(company);
         return request;
+
     }
 
     public CompanyDto getCompanyById(Long id)

@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequestMapping(path = "/api")
 @RestController
-public class TestController {
+public class Controller {
 	
 	@Autowired
 	private TestReadConfiguration testRead;
@@ -44,7 +44,7 @@ public class TestController {
 	}
 
 	@PostMapping(path = "/company", produces = MediaType.APPLICATION_JSON_VALUE)
-	public CompanyDto addMethod(@RequestBody CompanyDto req) {
+	public CompanyDto addMethod(@RequestBody CompanyDto req) throws Exception {
 		return companyService.createCompany(req);
 
 	}
