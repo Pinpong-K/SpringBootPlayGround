@@ -14,16 +14,21 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Data // all get and set
+
 public class CompanyDto {
 
     @JsonProperty(value = "company-name")
     private String companyName;
 
-    private List<OwnerDto> listOfOwner;
-
     private AddressDto address;
 
     private List<ContactDto> listOfContact;
+
+    private List<PersonDto> listOfOwner;
+
+    private List<PersonDto> listOfEmployee;
+
+
 
 
 }
