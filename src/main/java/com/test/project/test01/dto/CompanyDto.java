@@ -24,9 +24,9 @@ public class CompanyDto {
 
     private List<ContactDto> listOfContact;
 
-    private List<OwnerDto> listOfOwner;
+    private List<PersonDto> listOfOwner;
 
-    private List<EmployeeDto> listOfEmployee;
+    private List<PersonDto> listOfEmployee;
 
 
 

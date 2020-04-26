@@ -3,15 +3,13 @@ package com.test.project.test01.service;
 import com.test.project.test01.dto.*;
 import com.test.project.test01.entity.*;
 import com.test.project.test01.repository.CompanyRepo;
-import net.bytebuddy.implementation.bytecode.Throw;
-import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -59,16 +57,16 @@ public class CompanyService {
         }
 
         //create owner
-        for (OwnerDto ownerDto :request.getListOfOwner()) {
-            OwnerEntity ownerEntity = OwnerEntity.builder().person(personMapper.PersonDtoToPersonEntity(ownerDto.getPerson())).build();
+        for (PersonDto ownerDto :request.getListOfOwner()) {
+            OwnerEntity ownerEntity = OwnerEntity.builder().person(personMapper.PersonDtoToPersonEntity(ownerDto)).build();
             //set fk key
             ownerEntity.setCompany(company);
             ownerEntityList.add(ownerEntity);
         }
 
         //create employee
-        for (EmployeeDto employeeDto:request.getListOfEmployee() ) {
-            EmployeeEntity employee = EmployeeEntity.builder().person(personMapper.PersonDtoToPersonEntity(employeeDto.getPerson())).build();
+        for (PersonDto employeeDto:request.getListOfEmployee() ) {
+            EmployeeEntity employee = EmployeeEntity.builder().person(personMapper.PersonDtoToPersonEntity(employeeDto)).build();
             //set fk key
             employee.setCompany(company);
             employeeEntityList.add(employee);
@@ -90,7 +88,7 @@ public class CompanyService {
     public CompanyDto getCompanyById(Long id)
     {
         CompanyMapper mapper = Mappers.getMapper(CompanyMapper.class);
-        CompanyDto companyDto = mapper.toCompanyDto(companyRepo.getOne(id));
+        CompanyDto companyDto = mapper.toCompanyDtoTest(companyRepo.getOne(id));
         return  companyDto;
     }
 
@@ -99,18 +97,26 @@ public class CompanyService {
     {
         CompanyMapper mapper = Mappers.getMapper(CompanyMapper.class);
         List<CompanyDto> companyDtoList = new ArrayList<>();
-        companyRepo.findByCompanyNameContaining(name).forEach(ce -> companyDtoList.add(mapper.toCompanyDto(ce)));
+        companyRepo.findByCompanyNameContaining(name).forEach(ce -> companyDtoList.add(mapper.toCompanyDtoTest(ce)));
 
         return companyDtoList;
-
     }
 
     public CompanyDto getCompanyByName(String name)
     {
         //Init mapper
         CompanyMapper mapper = Mappers.getMapper(CompanyMapper.class);
+        PersonMapper personMapper = PersonMapper.builder().build();
+
         //get company entity and convent to DTO
-        CompanyDto companyDto = mapper.toCompanyDto(companyRepo.findByCompanyName(name));
+        CompanyEntity entity = companyRepo.findByCompanyName(name);
+        CompanyDto companyDto = mapper.toCompanyDtoTest(entity);
+        companyDto.setListOfEmployee(entity.getEmployees().stream().map(
+                a -> personMapper.PersonEntityToPersonDto(a.getPerson())
+                ).collect(Collectors.toList()));
+        companyDto.setListOfOwner(entity.getOwner().stream().map(
+                a -> personMapper.PersonEntityToPersonDto(a.getPerson())
+        ).collect(Collectors.toList()));
 
         return  companyDto;
     }
