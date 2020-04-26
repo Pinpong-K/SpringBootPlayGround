@@ -36,7 +36,7 @@ public class ControllerTest {
     @Test
     public void findCompany() throws Exception {
         when(companyService.getCompanyById(123L)).thenReturn(CompanyDto.builder().companyName("123456789").build());
-         mockMvc.perform(get("/api/company/123")).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.company-name", is("123456789")));
+        mockMvc.perform(get("/api/company/123")).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.company-name", is("123456789")));
 
     }
 

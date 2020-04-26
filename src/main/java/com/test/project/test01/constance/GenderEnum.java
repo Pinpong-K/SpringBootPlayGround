@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum GenderEnum {
     None("0"),
     Female("1"),
-    male("2");
+    Male("2");
 
     //GenderEnum.None.getcode
 

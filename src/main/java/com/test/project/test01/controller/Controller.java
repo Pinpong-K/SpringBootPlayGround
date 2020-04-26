@@ -5,7 +5,10 @@ import com.sun.org.apache.xpath.internal.objects.XNull;
 import com.test.project.test01.AddDto;
 import com.test.project.test01.TestReadConfiguration;
 import com.test.project.test01.dto.CompanyDto;
+import com.test.project.test01.dto.PersonDto;
+import com.test.project.test01.service.CompanyNotFoundException;
 import com.test.project.test01.service.CompanyService;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +36,7 @@ public class Controller {
 	}
 	
 	@PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AddDto addMethod(@RequestBody AddDto req) {
+    public AddDto CreateCompany(@RequestBody AddDto req) {
 		return new AddDto.Builder()
 				.setA(req.getA())
 				.build();
@@ -41,12 +44,26 @@ public class Controller {
 	}
 
 	@PostMapping(path = "/company", produces = MediaType.APPLICATION_JSON_VALUE)
-	public CompanyDto addMethod(@RequestBody CompanyDto req) throws Exception {
+	public CompanyDto CreateCompany(@RequestBody CompanyDto req) throws Exception {
 		return companyService.createCompany(req);
 
 	}
 
 
+	@GetMapping(path = "/company/{name}")
+	public CompanyDto FindComoany(@PathVariable String name)
+	{
+		CompanyDto foundCompany = companyService.getCompanyByName(name);
+		if(foundCompany == null)
+			throw  new CompanyNotFoundException();
+
+		return foundCompany;
+
+
+	}
+
+
+	/*
 	@GetMapping(path = "/company/{id}")
 	public  CompanyDto findCompany(@PathVariable Long id) {
 		return  companyService.getCompanyById(id);
@@ -59,6 +76,8 @@ public class Controller {
 
 
 	}
+	*/
+
 
         /*
 	@DeleteMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
