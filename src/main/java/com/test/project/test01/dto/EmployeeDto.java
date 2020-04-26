@@ -16,5 +16,4 @@ public class EmployeeDto {
 
         private PersonDto person;
 
-        private CompanyDto company;
 }

@@ -18,9 +18,6 @@ import java.util.List;
 public class Controller {
 	
 	@Autowired
-	private TestReadConfiguration testRead;
-
-	@Autowired
 	private CompanyService companyService;
 
 	

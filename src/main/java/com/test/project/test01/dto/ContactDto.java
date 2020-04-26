@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 @Data // all get and set
 public class ContactDto {
 
-    private Long id;
     private String telephone_number;
 }

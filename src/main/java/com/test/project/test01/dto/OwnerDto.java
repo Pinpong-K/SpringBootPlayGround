@@ -16,6 +16,4 @@ public class OwnerDto {
 
     private PersonDto person;
 
-    private CompanyDto company;
-
 }

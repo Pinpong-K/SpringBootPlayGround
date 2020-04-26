@@ -22,10 +22,12 @@ public class ContactEntity {
     @Column
     private String telephone_number;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "fk_contact_company")
     private CompanyEntity company;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "fk_contact_person")
     private PersonEntity person;
 
 }

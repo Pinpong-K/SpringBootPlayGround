@@ -52,6 +52,7 @@ public class PersonMapper {
             contactEntityList.add(contactDtoToContactEntity(contact));
 
         entity.setContacts(contactEntityList);
+        contactEntityList.forEach(contact -> contact.setPerson(entity));
 
         return entity;
     }
