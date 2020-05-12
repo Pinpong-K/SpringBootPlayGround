@@ -51,7 +51,7 @@ public class Controller {
 
 
 	@GetMapping(path = "/company/{name}")
-	public CompanyDto FindComoany(@PathVariable String name)
+	public CompanyDto FindCompany(@PathVariable String name)
 	{
 		CompanyDto foundCompany = companyService.getCompanyByName(name);
 		if(foundCompany == null)
