@@ -36,7 +36,7 @@ public class Controller {
 	}
 	
 	@PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AddDto CreateCompany(@RequestBody AddDto req) {
+    public AddDto createCompany(@RequestBody AddDto req) {
 		return new AddDto.Builder()
 				.setA(req.getA())
 				.build();
@@ -44,14 +44,14 @@ public class Controller {
 	}
 
 	@PostMapping(path = "/company", produces = MediaType.APPLICATION_JSON_VALUE)
-	public CompanyDto CreateCompany(@RequestBody CompanyDto req) throws Exception {
+	public CompanyDto createCompany(@RequestBody CompanyDto req) throws Exception {
 		return companyService.createCompany(req);
 
 	}
 
 
 	@GetMapping(path = "/company/{name}")
-	public CompanyDto FindCompany(@PathVariable String name)
+	public CompanyDto findCompany(@PathVariable String name)
 	{
 		CompanyDto foundCompany = companyService.getCompanyByName(name);
 		if(foundCompany == null)
