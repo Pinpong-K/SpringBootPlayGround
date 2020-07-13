@@ -6,7 +6,6 @@
 __SpringBoot project__  
 This is Maven project. To test SpringBoot feature.
   
-__Feature in this project__  
 
 
 
